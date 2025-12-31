@@ -1,78 +1,33 @@
-// Tạo Audio Context toàn cục
-let audioContext;
-
-function getAudioContext() {
-  if (!audioContext) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContext = new AudioContext();
-  }
-  return audioContext;
-}
-
-function playTone(frequency, duration, type = 'sine') {
-  try {
-    const ctx = getAudioContext();
-    
-    // Resume context nếu cần (một số trình duyệt yêu cầu user interaction trước)
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
-
-    const now = ctx.currentTime;
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    oscillator.frequency.value = frequency;
-    oscillator.type = type;
-
-    // Tăng âm lượng từ 0.8 lên 1.0 để nghe rõ hơn
-    gainNode.gain.setValueAtTime(1.0, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
-
-    oscillator.start(now);
-    oscillator.stop(now + duration);
-    
-    console.log("Playing tone: " + frequency + "Hz for " + duration + "s");
-  } catch (e) {
-    console.error("Audio error:", e);
-  }
-}
-
-// Hàm phát âm thanh khi nhấp nút hoặc nhấn phím
+// Đợi DOM tải xong rồi thêm event listener
 function playSound(key) {
   switch (key) {
     case "w":
-      // Tom 1 - Tần số cao
-      playTone(800, 0.3);
+      var audio = new Audio("sounds/tom-1.mp3");
+      audio.play();
       break;
     case "a":
-      // Tom 2 - Tần số trung
-      playTone(700, 0.3);
+      var audio = new Audio("sounds/tom-2.mp3");
+      audio.play();
       break;
     case "s":
-      // Tom 3 - Tần số thấp
-      playTone(600, 0.3);
+      var audio = new Audio("sounds/tom-3.mp3");
+      audio.play();
       break;
     case "d":
-      // Tom 4 - Tần số rất thấp
-      playTone(500, 0.3);
+      var audio = new Audio("sounds/tom-4.mp3");
+      audio.play();
       break;
     case "j":
-      // Snare - Âm thanh cao và ngắn
-      playTone(1000, 0.15, 'square');
-      playTone(800, 0.15, 'square');
+      var audio = new Audio("sounds/snare.mp3");
+      audio.play();
       break;
     case "k":
-      // Crash - Âm thanh rất cao
-      playTone(1200, 0.5);
-      playTone(1000, 0.5);
+      var audio = new Audio("sounds/crash.mp3");
+      audio.play();
       break;
     case "l":
-      // Kick Bass - Tần số thấp
-      playTone(250, 0.5);
+      var audio = new Audio("sounds/kick-bass.mp3");
+      audio.play();
       break;
     default:
       console.log(key);
